@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: codelabs-static-files
+spec:
+  selector:
+    matchLabels:
+      app: codelabs-static-files
+  serviceName: codelabs-static-files
+  replicas: 3
+  # Number of replicas to be used in local environment
+  # replicas: 1
+  template:
+    metadata:
+      labels:
+        app: codelabs-static-files
+    spec:
+      containers:
+        - name: codelabs-static-files
+          image: ghcr.io/upb-code-labs/static-files-microservice:0.6.1
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "250m"
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: GIN_MODE
+              value: release
+            - name: ARCHIVES_VOLUME_PATH
+              value: /opt/codelabs/archives
+          volumeMounts:
+            - name: static-files-volume
+              mountPath: /opt/codelabs/archives
+      # Init container that is executed before the main container
+      initContainers:
+        - name: create-volume-sub-folders
+          image: docker.io/library/alpine:3.18
+          command: ["/bin/sh", "-c"]
+          # Create the required sub-folders in the volume to store the students' submissions and teachers' tests
+          args:
+            [
+              "mkdir -p /opt/codelabs/archives/submissions /opt/codelabs/archives/tests",
+            ]
+          volumeMounts:
+            - name: static-files-volume
+              mountPath: /opt/codelabs/archives
+      volumes:
+        - name: static-files-volume
+          persistentVolumeClaim:
+            claimName: codelabs-static-files-pvc
+      securityContext:
+        runAsGroup: 1000
+        runAsUser: 1000
+        fsGroup: 1000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codelabs-static-files
+spec:
+  type: ClusterIP # Only accessible from within the cluster
+  selector:
+    app: codelabs-static-files
+  ports:
+    - name: http
+      port: 8081
+      targetPort: 8080

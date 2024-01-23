@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: codelabs-postgres
+spec:
+  selector:
+    matchLabels:
+      app: codelabs-postgres
+  serviceName: codelabs-postgres
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: codelabs-postgres
+    spec:
+      containers:
+      - name: codelabs-postgres
+        image: docker.io/library/postgres:alpine3.18
+        ports:
+        - name: pg
+          containerPort: 5432
+        env:
+          - name: POSTGRES_DB
+            value: codelabs
+        envFrom:
+        - secretRef:
+            name: codelabs-postgres-secrets
+        volumeMounts:
+        - name: codelabs-postgres-volume
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: codelabs-postgres-volume
+        persistentVolumeClaim:
+          claimName: codelabs-postgres-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codelabs-postgres
+spec:
+  type: ClusterIP # Only accessible from within the cluster
+  selector:
+    app: codelabs-postgres
+  ports:
+  - name: pg
+    port: 5432
+    targetPort: 5432

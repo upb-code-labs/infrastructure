@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codelabs-submissions-status-updater-svc
+spec:
+  replicas: 3
+  # Number of replicas to be used in local environment
+  # replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 2
+  selector:
+    matchLabels:
+      app: codelabs-submissions-status-updater-svc
+  template:
+    metadata:
+      labels:
+        app: codelabs-submissions-status-updater-svc
+    spec:
+      containers:
+        - name: codelabs-submissions-status-updater-svc
+          image: ghcr.io/upb-code-labs/submissions-status-updater-microservice:0.2.1
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "250m"
+          envFrom:
+            - secretRef:
+                name: submissions-status-updater-secrets

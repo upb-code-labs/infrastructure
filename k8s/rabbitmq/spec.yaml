@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: codelabs-rabbitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: codelabs-rabbitmq
+  serviceName: codelabs-rabbitmq
+  template:
+    metadata:
+      labels:
+        app: codelabs-rabbitmq
+    spec:
+      containers:
+        - name: codelabs-rabbitmq
+          image: docker.io/rabbitmq:3.9.29-management
+          ports:
+            - name: amqp
+              containerPort: 5672
+            - name: management
+              containerPort: 15672
+          envFrom:
+            - secretRef:
+                name: codelabs-rabbitmq-secrets
+          volumeMounts:
+            - name: codelabs-rabbitmq-volume
+              mountPath: /var/lib/rabbitmq
+      volumes:
+        - name: codelabs-rabbitmq-volume
+          persistentVolumeClaim:
+            claimName: codelabs-rabbitmq-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codelabs-rabbitmq
+spec:
+  type: ClusterIP # Only accessible from within the cluster
+  selector:
+    app: codelabs-rabbitmq
+  ports:
+    - name: amqp
+      port: 5672
+      targetPort: 5672
+    - name: management
+      port: 15672
+      targetPort: 15672

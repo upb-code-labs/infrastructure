@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codelabs-gateway
+spec:
+  replicas: 3
+  # Number of replicas to be used in local environment
+  # replicas: 1
+  selector:
+    matchLabels:
+      app: codelabs-gateway
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 2
+  template:
+    metadata:
+      labels:
+        app: codelabs-gateway
+    spec:
+      containers:
+        - name: codelabs-gateway
+          image: ghcr.io/upb-code-labs/main-api:0.53.2
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "1000m"
+          ports:
+            - name: http
+              containerPort: 8080
+              hostPort: 8080
+          env:
+            - name: GIN_MODE
+              value: release
+            - name: EXEC_ENVIRONMENT
+              value: production
+            - name: WEB_CLIENT_URL
+              value: http://codelabs-web:80
+            - name: STATIC_FILES_MICROSERVICE_ADDRESS
+              value: http://codelabs-static-files:8081
+          envFrom:
+            - secretRef:
+                name: gateway-secrets
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codelabs-gateway
+spec:
+  type: LoadBalancer # Accessible from outside the cluster
+  selector:
+    app: codelabs-gateway
+  ports:
+    - port: 8080
+      targetPort: 8080
