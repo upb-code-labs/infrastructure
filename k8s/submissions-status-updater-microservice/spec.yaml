@@ -3,9 +3,10 @@ kind: Deployment
 metadata:
   name: codelabs-submissions-status-updater-svc
 spec:
-  replicas: 3
+  # Number of replicas to be used in production environment
+  # replicas: 3
   # Number of replicas to be used in local environment
-  # replicas: 1
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:

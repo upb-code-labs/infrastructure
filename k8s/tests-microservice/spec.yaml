@@ -3,9 +3,10 @@ kind: Deployment
 metadata:
   name: codelabs-tests-runner-svc
 spec:
-  replicas: 3
+  # Number of replicas to be used in production environment
+  # replicas: 3
   # Number of replicas to be used in local environment
-  # replicas: 1
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -22,15 +23,16 @@ spec:
       containers:
         - name: codelabs-tests-runner-svc
           image: ghcr.io/upb-code-labs/tests-microservice:0.1.3
+          # Resources for production environment
+          # resources:
+            # limits:
+              # memory: "1Gi"
+              # cpu: "2000m"
+          # Resources for local environment
           resources:
             limits:
-              memory: "1Gi"
-              cpu: "2000m"
-          # Resources for local environment
-          # resources:
-          #   limits:
-          #     memory: "512Mi"
-          #     cpu: "1000m"
+              memory: "512Mi"
+              cpu: "1000m"
           env:
             - name: STATIC_FILES_MICROSERVICE_ADDRESS
               value: http://codelabs-static-files:8081

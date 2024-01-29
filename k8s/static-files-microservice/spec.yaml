@@ -7,9 +7,9 @@ spec:
     matchLabels:
       app: codelabs-static-files
   serviceName: codelabs-static-files
-  replicas: 3
+  # replicas: 3
   # Number of replicas to be used in local environment
-  # replicas: 1
+  replicas: 1
   template:
     metadata:
       labels:
