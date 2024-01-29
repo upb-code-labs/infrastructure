@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: codelabs-static-files
-          image: ghcr.io/upb-code-labs/static-files-microservice:0.6.1
+          image: ghcr.io/upb-code-labs/static-files-microservice:0.6.3
           resources:
             limits:
               memory: "256Mi"
