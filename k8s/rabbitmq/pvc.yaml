@@ -3,6 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: codelabs-rabbitmq-pvc
 spec:
+  storageClassName: nfs-csi-retained
   resources:
     requests:
       storage: 1Gi

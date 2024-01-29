@@ -3,6 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: codelabs-static-files-pvc
 spec:
+  storageClassName: nfs-csi-retained
   resources:
     requests:
       storage: 150Gi
