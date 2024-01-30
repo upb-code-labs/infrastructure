@@ -1,4 +1,4 @@
-FROM docker.io/library/alpine:3.18
+FROM docker.io/library/alpine:3.19.1
 
 # Create directories
 RUN mkdir -p /var/backups/db
@@ -15,7 +15,7 @@ RUN chmod +x ./*.sh
 RUN apk update && apk upgrade
 
 # Install the pg_dump tool
-RUN apk add --no-cache postgresql-client
+RUN apk add --no-cache postgresql16-client
 
 # Install rclone
 RUN apk add --no-cache rclone

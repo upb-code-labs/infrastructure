@@ -12,7 +12,7 @@ spec:
         spec:
           containers:
             - name: codelabs-postgres-backup
-              image: pedrochaparroupb/postgres-rclone-backup-utility:0.0.1
+              image: pedrochaparroupb/postgres-rclone-backup-utility:0.1.1
               envFrom:
                 - secretRef:
                     name: codelabs-postgres-backup-secret
@@ -24,6 +24,7 @@ spec:
                 # Mount rclone configuration to the container
                 - name: codelabs-postgres-backup-rclone-config
                   mountPath: /.config/rclone.conf
+                  readOnly: true
 
           # Don't restart the container, even if it fails
           restartPolicy: Never

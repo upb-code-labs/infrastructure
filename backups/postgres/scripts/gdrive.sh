@@ -4,9 +4,7 @@
 COMPRESSED_FILE_NAME=$1
 
 # Push the backup to Google Drive
-rclone --config /.config/rclone.conf copyto /var/backups/db/$COMPRESSED_FILE_NAME gdrive:backups/db
-STATUS=$?
+rclone --config /.config/rclone.conf copyto /var/backups/db/$COMPRESSED_FILE_NAME gdrive:backups/db/$COMPRESSED_FILE_NAME
 
-if [ $STATUS -ne 0 ]; then
-  exit $STATUS
-fi
+STATUS=$?
+exit $STATUS

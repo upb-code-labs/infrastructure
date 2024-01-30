@@ -1,14 +1,15 @@
 #!/bin/sh
 
+# Move to the backups directory
+cd /var/backups/db
+
 # Get the current date in format YYYY-MM-DD:HH:MM
 DATE=$(date +"%Y-%m-%d:%H:%M")
-echo "Starting backup at $DATE"
-
 UNCOMPRESSED_FILE_NAME=$DATE.sql
 COMPRESSED_FILE_NAME=$DATE.tar.gz
 
 # Dump the database to a file. Note that parameters are received as environment variables
-pg_dump > /var/backups/db/$UNCOMPRESSED_FILE_NAME
+pg_dump > ./$UNCOMPRESSED_FILE_NAME
 STATUS=$?
 
 if [ $STATUS -ne 0 ]; then
@@ -16,10 +17,10 @@ if [ $STATUS -ne 0 ]; then
 fi
 
 # Compress the file
-tar -czf /var/backups/db/$COMPRESSED_FILE_NAME /var/backups/db/$UNCOMPRESSED_FILE_NAME
+tar -czf ./$COMPRESSED_FILE_NAME ./$UNCOMPRESSED_FILE_NAME
 
 # Remove the uncompressed file
-rm /var/backups/db/$UNCOMPRESSED_FILE_NAME
+rm ./$UNCOMPRESSED_FILE_NAME
 
 # Output the name of the file
-echo $COMPRESSED_FILE_NAME
+echo "$COMPRESSED_FILE_NAME"
