@@ -1,0 +1,39 @@
+name: Bump service version
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        type: string
+        description: "The version to bump to"
+        required: true
+      service:
+        type: string
+        description: "The service to bump"
+        required: true
+        options:
+          - gateway
+          - static_files_microservice
+          - submissions_status_updater_microservice
+          - tests_microservice
+          - web
+
+jobs:
+  bump-service:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Bump service version
+        run: |
+          echo "Bumping version of ${{ github.event.inputs.service }} to ${{ github.event.inputs.version }}"
+          python bump-images.py ${{ github.event.inputs.service }} ${{ github.event.inputs.version }}
+
+      - name: Commit and push
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "ci: bump service to v${{ github.event.inputs.version }}"
+          add: "k8s"
+          default_author: github-actions
