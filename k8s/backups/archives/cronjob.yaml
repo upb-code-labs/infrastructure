@@ -1,0 +1,45 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: codelabs-archives-backup
+spec:
+  # Run the job every Monday, Wednesday, and Friday at midnight
+  timeZone: America/Bogota
+  schedule: "0 0 * * 1,3,5"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: codelabs-archives-backup
+              image: pedrochaparroupb/directory-rclone-backup-utility:0.1.0
+
+              volumeMounts:
+                # Mount archives volume to the container
+                - name: codelabs-archives-volume
+                  mountPath: /var/codelabs/archives
+                # Mount backups volume to the container
+                - name: codelabs-archives-backup-volume
+                  mountPath: /var/codelabs/backups/archives
+                # Mount rclone configuration to the container
+                - name: codelabs-archives-backup-rclone-config
+                  mountPath: /.config/rclone.conf
+                  readOnly: true
+
+          # Don't restart the container, even if it fails
+          restartPolicy: Never
+
+          volumes:
+            - name: codelabs-archives-volume
+              persistentVolumeClaim:
+                claimName: codelabs-static-files-pvc
+
+            - name: codelabs-archives-backup-volume
+              persistentVolumeClaim:
+                claimName: codelabs-archives-backup-pvc
+
+            - name: codelabs-archives-backup-rclone-config
+              # This requires the rclone.conf file to be present in all nodes
+              hostPath:
+                path: /etc/rclone/rclone.conf
+                type: File
