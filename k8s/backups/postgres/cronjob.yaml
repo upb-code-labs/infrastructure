@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: codelabs-postgres-backup
+spec:
+  timeZone: America/Bogota
+  schedule: "0 0 * * 1,3,5"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: codelabs-postgres-backup
+            image: pedrochaparroupb/postgres-rclone-backup-utility:0.0.1
+            envFrom:
+              - secretRef:
+                  name: codelabs-postgres-backup-secret
+          restartPolicy: Never
