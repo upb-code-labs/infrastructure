@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: codelabs-postgres-backup-pvc
+spec:
+  storageClassName: nfs-csi-retained
+  resources:
+    requests:
+      storage: 15Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
