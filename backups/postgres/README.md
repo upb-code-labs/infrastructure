@@ -12,6 +12,21 @@ This is a simple docker image that makes use of the `pg_dump` utility to backup 
 
    - After configuring `rclone`, you need to save the configuration file somewhere in the node that will run the backup as you will need to mount it to the container.
 
+2. You need to have a public key to encrypt the backup. You can generate a new key using the `gpg` utility. Please, refer to the [gpg docs](https://gnupg.org/gph/en/manual.html) for more information. Please, note the following:
+
+   - The [encrypt script](./scripts/encrypt.sh) expects a public key named `public.key` to be saved in the `/etc/gpg` folder.
+   - The [encrypt script](./scripts/encrypt.sh) also expects a file named `user_id.txt` to be saved in the `/etc/gpg` folder. This file should only contain one line with the user id of the public key.
+
+In summary, you need the following files under the `/etc/gpg` folder:
+
+```
+.
+└── etc/
+    └── gpg/
+        ├── public.key
+        └── user_id.txt
+```
+
 ### Environment
 
 Please, refer to the [environment.md](./environment.md) file for the required environment variables to run the service.
@@ -29,7 +44,11 @@ docker run \
     -e PGPASSWORD=mypassword \
     # So that the container can access the rclone configuration
     -v /path/to/rclone.conf:/.config/rclone.conf:ro \
+    # So that the public key can be used to encrypt the backup
+    -v /path/to/public_key_and_user_id:/etc/gpg:ro \
     # So that the backup can be also saved in the host
     -v /path/to/backups:/var/backups/db \
     pedrochaparroupb/postgres-rclone-backup-utility:0.1.0
 ```
+
+Please note that the `/path/to/public-key`

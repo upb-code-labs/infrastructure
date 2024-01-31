@@ -21,6 +21,10 @@ spec:
                 # Mount backups volume to the container
                 - name: codelabs-postgres-backup-volume
                   mountPath: /var/backups/db
+                # Mount public gpg key to the container
+                - name: codelabs-postgres-backup-gpg-key
+                  mountPath: /etc/gpg
+                  readOnly: true
                 # Mount rclone configuration to the container
                 - name: codelabs-postgres-backup-rclone-config
                   mountPath: /.config/rclone.conf
@@ -39,3 +43,9 @@ spec:
               hostPath:
                 path: /etc/rclone/rclone.conf
                 type: File
+            
+            - name: codelabs-postgres-backup-gpg-key
+              # This requires the public gpg key to be present in all nodes
+              hostPath:
+                path: /etc/gpg
+                type: Directory
