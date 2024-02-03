@@ -9,7 +9,7 @@ spec:
   tls:
   - hosts:
     - codelabs.bucaramanga.upb.edu.co
-    secretName: codelabs-ssl-secret
+    secretName: codelabs-ssl-secrets
   rules:
   - host: codelabs.bucaramanga.upb.edu.co
     http:
