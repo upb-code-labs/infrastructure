@@ -37,7 +37,7 @@ spec:
             - name: EXEC_ENVIRONMENT
               value: production
             - name: WEB_CLIENT_URL
-              value: http://codelabs-web:80
+              value: https://codelabs.bucaramanga.upb.edu.co
             - name: STATIC_FILES_MICROSERVICE_ADDRESS
               value: http://codelabs-static-files:8081
           envFrom:
