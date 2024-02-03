@@ -7,24 +7,24 @@ metadata:
 spec:
   ingressClassName: nginx
   tls:
-  - hosts:
-    - codelabs.bucaramanga.upb.edu.co
-    secretName: codelabs-ssl-secrets
+    - hosts:
+        - codelabs.bucaramanga.upb.edu.co
+      secretName: codelabs-ssl-secrets
   rules:
-  - host: codelabs.bucaramanga.upb.edu.co
-    http:
-      paths:
-      - pathType: Prefix
-        path: "/"
-        backend:
-          service:
-            name: codelabs-web
-            port: 
-              number: 80
-      - pathType: Prefix
-        path: "/api/v1"
-        backend:
-          service:
-            name: codelabs-gateway
-            port: 
-              number: 8080
+    - host: codelabs.bucaramanga.upb.edu.co
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: codelabs-web
+                port:
+                  number: 80
+          - pathType: Prefix
+            path: "/api/v1"
+            backend:
+              service:
+                name: codelabs-gateway
+                port:
+                  number: 8080

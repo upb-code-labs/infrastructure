@@ -14,21 +14,21 @@ spec:
         app: codelabs-postgres
     spec:
       containers:
-      - name: codelabs-postgres
-        image: docker.io/library/postgres:16.1-alpine3.19
-        ports:
-        - name: pg
-          containerPort: 5432
-        envFrom:
-        - secretRef:
-            name: codelabs-postgres-secrets
-        volumeMounts:
-        - name: codelabs-postgres-volume
-          mountPath: /var/lib/postgresql/data
+        - name: codelabs-postgres
+          image: docker.io/library/postgres:16.1-alpine3.19
+          ports:
+            - name: pg
+              containerPort: 5432
+          envFrom:
+            - secretRef:
+                name: codelabs-postgres-secrets
+          volumeMounts:
+            - name: codelabs-postgres-volume
+              mountPath: /var/lib/postgresql/data
       volumes:
-      - name: codelabs-postgres-volume
-        persistentVolumeClaim:
-          claimName: codelabs-postgres-pvc
+        - name: codelabs-postgres-volume
+          persistentVolumeClaim:
+            claimName: codelabs-postgres-pvc
 ---
 apiVersion: v1
 kind: Service
@@ -39,6 +39,6 @@ spec:
   selector:
     app: codelabs-postgres
   ports:
-  - name: pg
-    port: 5432
-    targetPort: 5432
+    - name: pg
+      port: 5432
+      targetPort: 5432

@@ -25,9 +25,9 @@ spec:
           image: ghcr.io/upb-code-labs/tests-microservice:0.1.3
           # Resources for production environment
           # resources:
-            # limits:
-              # memory: "1Gi"
-              # cpu: "2000m"
+          # limits:
+          # memory: "1Gi"
+          # cpu: "2000m"
           # Resources for local environment
           resources:
             limits:
