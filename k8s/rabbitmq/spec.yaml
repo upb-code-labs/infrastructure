@@ -16,6 +16,10 @@ spec:
       containers:
         - name: codelabs-rabbitmq
           image: docker.io/rabbitmq:3.9.29-management-alpine
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "250m"
           ports:
             - name: amqp
               containerPort: 5672

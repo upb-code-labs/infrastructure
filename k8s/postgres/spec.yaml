@@ -16,6 +16,10 @@ spec:
       containers:
         - name: codelabs-postgres
           image: docker.io/library/postgres:16.1-alpine3.19
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "250m"
           ports:
             - name: pg
               containerPort: 5432
