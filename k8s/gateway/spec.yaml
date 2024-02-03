@@ -30,7 +30,7 @@ spec:
           ports:
             - name: http
               containerPort: 8080
-              hostPort: 8080
+              # hostPort: 8080
           env:
             - name: GIN_MODE
               value: release
@@ -49,9 +49,10 @@ kind: Service
 metadata:
   name: codelabs-gateway
 spec:
-  type: LoadBalancer # Accessible from outside the cluster
+  type: ClusterIP # Only accessible from within the cluster
   selector:
     app: codelabs-gateway
   ports:
-    - port: 8080
+    - name: http
+      port: 8080
       targetPort: 8080

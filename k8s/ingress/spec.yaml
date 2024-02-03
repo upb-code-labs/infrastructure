@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: codelabs-ingress
+  labels:
+    name: codelabs-ingress
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - codelabs.bucaramanga.upb.edu.co
+    secretName: codelabs-ssl-secret
+  rules:
+  - host: codelabs.bucaramanga.upb.edu.co
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: codelabs-web
+            port: 
+              number: 80
+      - pathType: Prefix
+        path: "/api/v1"
+        backend:
+          service:
+            name: codelabs-gateway
+            port: 
+              number: 8080
