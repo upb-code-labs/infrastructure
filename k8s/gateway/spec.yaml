@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: codelabs-gateway
-          image: ghcr.io/upb-code-labs/main-api:0.53.3
+          image: ghcr.io/upb-code-labs/main-api:0.53.4
           resources:
             limits:
               memory: "512Mi"
