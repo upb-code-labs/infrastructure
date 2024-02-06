@@ -12,7 +12,7 @@ spec:
         spec:
           containers:
             - name: codelabs-postgres-backup
-              image: pedrochaparroupb/postgres-rclone-backup-utility:0.1.1
+              image: pedrochaparroupb/postgres-rclone-backup-utility:0.2.1
               envFrom:
                 - secretRef:
                     name: codelabs-postgres-backup-secret
@@ -23,7 +23,7 @@ spec:
                   mountPath: /var/backups/db
                 # Mount public gpg key to the container
                 - name: codelabs-postgres-backup-gpg-key
-                  mountPath: /etc/gpg
+                  mountPath: /etc/gpg/backups
                   readOnly: true
                 # Mount rclone configuration to the container
                 - name: codelabs-postgres-backup-rclone-config
