@@ -26,8 +26,8 @@ spec:
           # Resources for production environment
           # resources:
           # limits:
-          # memory: "1Gi"
-          # cpu: "2000m"
+          # memory: "2.0Gi"
+          # cpu: "750m"
           # Resources for local environment
           resources:
             limits:
