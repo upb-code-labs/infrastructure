@@ -3,6 +3,9 @@ kind: Deployment
 metadata:
   name: codelabs-web
 spec:
+  # Number of replicas to be used in production environment
+  # replicas: 3
+  # Number of replicas to be used in local environment
   replicas: 1
   selector:
     matchLabels:
@@ -21,9 +24,12 @@ spec:
         - name: codelabs-web
           image: ghcr.io/upb-code-labs/react-client:0.50.2
           resources:
-            limits:
+            requests:
               memory: "256Mi"
               cpu: "125m"
+            limits:
+              memory: "521Mi"
+              # cpu: "125m"
           ports:
             - name: http
               containerPort: 80

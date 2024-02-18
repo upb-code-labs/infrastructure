@@ -14,7 +14,7 @@ spec:
     type: RollingUpdate
     rollingUpdate:
       maxSurge: 1
-      maxUnavailable: 2
+      maxUnavailable: 1
   template:
     metadata:
       labels:
@@ -24,9 +24,12 @@ spec:
         - name: codelabs-gateway
           image: ghcr.io/upb-code-labs/main-api:0.53.5
           resources:
-            limits:
+            requests:
               memory: "512Mi"
-              cpu: "1000m"
+              cpu: "256m"
+            limits:
+              memory: "1.5Gi"
+              # cpu: "512m"
           ports:
             - name: http
               containerPort: 8080

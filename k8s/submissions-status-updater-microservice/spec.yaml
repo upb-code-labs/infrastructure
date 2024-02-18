@@ -4,14 +4,14 @@ metadata:
   name: codelabs-submissions-status-updater-svc
 spec:
   # Number of replicas to be used in production environment
-  # replicas: 3
+  # replicas: 2
   # Number of replicas to be used in local environment
   replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxSurge: 1
-      maxUnavailable: 2
+      maxUnavailable: 1
   selector:
     matchLabels:
       app: codelabs-submissions-status-updater-svc
@@ -24,9 +24,12 @@ spec:
         - name: codelabs-submissions-status-updater-svc
           image: ghcr.io/upb-code-labs/submissions-status-updater-microservice:0.2.1
           resources:
+            requests:
+              memory: "128Mi"
+              cpu: "125m"
             limits:
               memory: "256Mi"
-              cpu: "125m"
+              # cpu: "125m"
           envFrom:
             - secretRef:
                 name: submissions-status-updater-secrets
