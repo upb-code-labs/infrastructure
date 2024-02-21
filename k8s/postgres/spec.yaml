@@ -16,6 +16,12 @@ spec:
       containers:
         - name: codelabs-postgres
           image: docker.io/library/postgres:16.1-alpine3.19
+          securityContext:
+            runAsUser: 70
+            runAsGroup: 70
+            fsGroup: 70
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
           resources:
             requests:
               memory: "512Mi"
@@ -26,9 +32,10 @@ spec:
           ports:
             - name: pg
               containerPort: 5432
-          envFrom:
-            - secretRef:
-                name: codelabs-postgres-secrets
+          # Just required the first time to initialize the database
+          # envFrom:
+            # - secretRef:
+                # name: codelabs-postgres-secrets
           volumeMounts:
             - name: codelabs-postgres-volume
               mountPath: /var/lib/postgresql/data
