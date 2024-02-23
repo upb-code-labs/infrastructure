@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: codelabs-web
-          image: ghcr.io/upb-code-labs/react-client:0.50.3
+          image: ghcr.io/upb-code-labs/react-client:0.50.5
           resources:
             requests:
               memory: "256Mi"
